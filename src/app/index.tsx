@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, Pressable, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AnimatedIcon } from '@/components/animated-icon';
@@ -29,6 +30,8 @@ function getDevMenuHint() {
 }
 
 export default function HomeScreen() {
+  const [addedToCart, setAddedToCart] = useState(false);
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
@@ -42,6 +45,24 @@ export default function HomeScreen() {
         <ThemedText type="code" style={styles.code}>
           Roll No.: 23i-3054
         </ThemedText>
+
+        <ThemedView type="backgroundElement" style={styles.productCard}>
+          <ThemedText type="small">FEATURED PRODUCT</ThemedText>
+          <ThemedText type="subtitle" style={styles.productName}>
+            Everyday Backpack
+          </ThemedText>
+          <ThemedText type="default" style={styles.price}>
+            $49.99
+          </ThemedText>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => setAddedToCart((current) => !current)}
+            style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}>
+            <ThemedText type="smallBold" style={styles.buttonText}>
+              {addedToCart ? 'Added to cart' : 'Add to cart'}
+            </ThemedText>
+          </Pressable>
+        </ThemedView>
 
         <ThemedView type="backgroundElement" style={styles.stepContainer}>
           <HintRow
@@ -87,6 +108,35 @@ const styles = StyleSheet.create({
   },
   code: {
     textTransform: 'uppercase',
+  },
+  productCard: {
+    alignSelf: 'stretch',
+    padding: Spacing.four,
+    gap: Spacing.two,
+    borderRadius: Spacing.three,
+  },
+  productName: {
+    fontSize: 24,
+    lineHeight: 32,
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 48,
+    marginTop: Spacing.two,
+    paddingHorizontal: Spacing.three,
+    borderRadius: Spacing.two,
+    backgroundColor: '#2563EB',
+  },
+  buttonPressed: {
+    opacity: 0.75,
+  },
+  buttonText: {
+    color: '#FFFFFF',
   },
   stepContainer: {
     gap: Spacing.three,
